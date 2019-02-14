@@ -31,7 +31,7 @@ The several screens that the user will see include:
 7. **Manage Account**: The manage account interface allows the user to change/update their personal information.
 8. **Activity Log**: The activity log interface allows the user to view all of their actions in the social network in a reverse chronological order. 
 
-Section 4: Technology and Tools Used
+# Technology and Tools Used
 We are using for this **LAMP technology stack** for this project:
 
 * Linux based operating system is being used (v. Ubuntu 16.04/18.04 LTS). 
