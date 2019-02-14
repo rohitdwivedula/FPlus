@@ -48,3 +48,13 @@ CREATE TABLE reactions (
 	FOREIGN KEY (post_id) REFERENCES posts(post_id),
 	FOREIGN KEY (username) REFERENCES users(username)
 );
+
+CREATE TABLE circles (
+	relation_id int NOT NULL AUTO_INCREMENT,
+	user1 varchar(25) NOT NULL, 
+	user2 varchar(25) NOT NULL,
+	relation int NOT NULL,
+	PRIMARY KEY (relation_id),
+	FOREIGN KEY (user1) REFERENCES users(username),
+	FOREIGN KEY (user2) REFERENCES users(username)
+);
