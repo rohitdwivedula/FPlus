@@ -1,6 +1,6 @@
 # FPlus
 
-A social networking website built on the LAMP stack. Made as a project for partial credit towards the course CS F212 Database Management Syetems. 
+A social networking website built on the LAMP stack. Made as a project for partial credit towards the course CS F212 Database Management Systems. 
 
 # Functionality Supported
 The social networking application will definitely support the following functionality fully:
