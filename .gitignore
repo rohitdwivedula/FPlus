@@ -1,5 +1,5 @@
-Setup/composer.json
-Setup/composer.lock
-Setup/credentials.json
-Setup/token.json
-Setup/vendor
+private/gmail/composer.json
+private/gmail/composer.lock
+private/gmail/credentials.json
+private/gmail/token.json
+private/gmail/vendor
