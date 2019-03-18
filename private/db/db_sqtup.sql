@@ -11,7 +11,7 @@ CREATE TABLE users (
 	phone varchar(20),
 	dob date,
 	account_created_on datetime NOT NULL,
-	sex varchar(255),
+	sex char(1),
 	PRIMARY KEY (username)
 );
 
