@@ -40,21 +40,19 @@ CREATE TABLE comments (
 );
 
 CREATE TABLE reactions (
-	react_id int NOT NULL AUTO_INCREMENT,
 	post_id int NOT NULL,
 	username varchar(25) NOT NULL,
 	react_type int NOT NULL,
-	PRIMARY KEY (react_id),
+	PRIMARY KEY (postid,username),
 	FOREIGN KEY (post_id) REFERENCES posts(post_id),
 	FOREIGN KEY (username) REFERENCES users(username)
 );
 
-CREATE TABLE circles (
-	relation_id int NOT NULL AUTO_INCREMENT,
+CREATE TABLE relation (
 	user1 varchar(25) NOT NULL, 
 	user2 varchar(25) NOT NULL,
-	relation int NOT NULL,
-	PRIMARY KEY (relation_id),
+	relation_type int NOT NULL,
+	PRIMARY KEY (user1,user2),
 	FOREIGN KEY (user1) REFERENCES users(username),
 	FOREIGN KEY (user2) REFERENCES users(username)
 );
