@@ -43,7 +43,7 @@ CREATE TABLE reactions (
 	post_id int NOT NULL,
 	username varchar(25) NOT NULL,
 	react_type int NOT NULL,
-	PRIMARY KEY (postid,username),
+	PRIMARY KEY (post_id,username),
 	FOREIGN KEY (post_id) REFERENCES posts(post_id),
 	FOREIGN KEY (username) REFERENCES users(username)
 );
