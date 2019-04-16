@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<?php
+    if($_SERVER['REQUEST_METHOD'] == "POST"){
+    	$username = $_POST["username"];
+    	$fname = $_POST["fname"];
+    	$lname = $_POST["lname"];
+    	$email = $_POST["email"];
+        $pwd = $_POST["pwd"];
+        $cnf_pwd = $_POST["cnf_pwd"]; 
+        if($pwd != $cnf_pwd){
+ 			header("Location: register.html?error=not_match");
+ 			exit();
+        }
+        $phone = $_POST["phone"];
+        $dob = $_POST["dob"];
+        $sex = $_POST["sex"];
+ 		require_once("./utilities/create_user.php");
+        $user = createUser($username, $fname, $lname, $email, $pwd, $phone, $dob, $sex);
+ 		if(strcmp($user, "ALREADY_EXISTS") == 0){
+ 		    header("Location: index.html?error=already_exists");
+ 			exit();
+ 		}
+        elseif(strcmp($user, "ERROR") == 0){
+            header("Location: index.html?error=yes");
+            exit();
+        }
+        elseif($user){
+            header("Location: index.html?success=account_created");
+            exit();
+        }
+	}
+?>
+<html>
+    <head>
+        <title> FPlus </title>
+        <style type="text/css">
+            body{
+                margin:0;
+                padding:0;
+                font-family: Sans-Serif;
+                line-height: 1.5em;
+            }
+            
+            main {
+                padding-bottom: 10010px;
+                margin-bottom: -10000px;
+                float: left;
+                width: 100%;
+            }
+            
+            input {
+                float: center;
+                color:green;
+            }
+            #nav {
+                float: left;
+                width: 230px;
+                margin-left: -100%;
+                padding-bottom: 10010px;
+                margin-bottom: -10000px;
+                background: #eee;
+            }
+            
+            #wrapper {
+                overflow: hidden;
+            }
+            
+            #content {
+                margin-left: 230px; /* Same as 'nav' width */
+            }
+            
+            .innertube{
+                margin: 15px; /* Padding for content */
+                margin-top: 0;
+            }
+            .error {
+                padding-top: 7px;
+                padding-bottom: 7px;
+                background-color:  #ff9999;
+                color: black;
+                text-align: center;
+            }
+            
+            p {
+                color: #555;
+            }
+    
+            nav ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+            
+            nav ul a {
+                color: darkgreen;
+                text-decoration: none;
+            }
+    
+        </style>
+
+    </head>
+    
+    <body>
+        <div id="wrapper">
+            <main>
+                <div id="content">
+                    <div class="innertube">
+                        <i>Page last refreshed <?php echo date("F d, Y H:i:s");?></i>
+                        <h1>FPlus: Social Media Redefined</h1>
+                        <?php
+                            if(isset($_GET["error"])){
+                                if($_GET["error"] == "not_match"){
+                                    $message = "Your key and confirm key do not match.";
+                                }
+                                elseif($_GET["error"] == "notexists"){
+                                    $message = "The account ID you've entered does not exist.";
+                                }
+                                else{
+                                    $message = "An unexpected error was experienced.";
+                                }
+                                echo "<div class='error'>$message</div>";
+                                unset($_GET["error"]);
+                            }
+                        ?>
+                        <h2>Register New Account</h2>
+                        Fill in all the details to register your account. I mean, we need your personal info to sell. That's how we pay our bills, after all. Therefore, all fields are mandatory. 
+                    </div>
+                <div id = "register">
+                    <form method="post" style="text-align: left;" action="<?php echo $_SERVER["PHP_SELF"];?>">
+                        <center>
+                            <input type="text" name="username" maxlength="255" placeholder="Unique username/identifier" id="inputUsername" required>
+                            <br>
+                            <input type="text" name="fname" maxlength="255" placeholder="First name" id="inputFName" required>
+                            <br>
+                            <input type="text" name="lname" maxlength="255" placeholder="Last name" id="inputLName" required>
+                            <br>
+                            <input type="email" name="email" maxlength="255" placeholder="email" id="inputEmail" required>
+                            <br>
+                            <input type="password" name="pwd" maxlength="255" placeholder="Password (max 255 chars)" id="inputPwd" required>
+                            <br>
+                            <input type="password" name="cnf_pwd" maxlength="255" placeholder="Confirm Password (max 255 chars)" id="inputCnfPWd" required>
+                            <br>
+                            <input type="text" name="phone" maxlength="255" placeholder="Phone, eg 798955844" id="inputPhone" required>
+                            <br>
+                            <input type="date" name="dob" id="inputDob" required>
+                            <br>
+                            <input type="text" name="sex" maxlength="255" placeholder="Sex" id="inputSex" required>
+                            <br>
+                            <br>
+                            <input type="submit" value="Submit">
+                        </center>
+                    </form>
+                </div>
+                </div>
+
+                
+            </main>`
+            
+            <nav id="nav">
+                <div class="innertube">
+                    <h3>About</h3>
+                    Just another cool website that creepily stalks you and your private data. Ostensibly a social networking site too. (We don't have complex privacy policies, because we GUARANTEE you no privacy. Happy browsing!) 
+                    <br>
+                </div>
+            </nav>
+            
+        </div>
+    </body>
+</html>
