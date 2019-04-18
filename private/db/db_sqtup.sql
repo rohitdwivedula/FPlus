@@ -56,3 +56,9 @@ CREATE TABLE relation (
 	FOREIGN KEY (user1) REFERENCES users(username),
 	FOREIGN KEY (user2) REFERENCES users(username)
 );
+
+RELATION TYPES/VISIBILITY LEVELS:
+
+1. Friends
+2. Family
+3. Acquaintances

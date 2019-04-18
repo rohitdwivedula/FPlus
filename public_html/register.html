@@ -48,10 +48,6 @@
                 width: 100%;
             }
             
-            input {
-                float: center;
-                color:green;
-            }
             #nav {
                 float: left;
                 width: 230px;
@@ -61,24 +57,23 @@
                 background: #eee;
             }
             
+            .page-header {
+                background-color: #d1e2ff;
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+            }
+
             #wrapper {
                 overflow: hidden;
             }
             
-            #content {
+            .content {
                 margin-left: 230px; /* Same as 'nav' width */
             }
             
             .innertube{
                 margin: 15px; /* Padding for content */
                 margin-top: 0;
-            }
-            .error {
-                padding-top: 7px;
-                padding-bottom: 7px;
-                background-color:  #ff9999;
-                color: black;
-                text-align: center;
             }
             
             p {
@@ -95,18 +90,36 @@
                 color: darkgreen;
                 text-decoration: none;
             }
-    
+            table {
+              font-family: arial, sans-serif;
+              border-collapse: collapse;
+              width: 100%;
+            }
+            td, th {
+              border: 1px solid #dddddd;
+              text-align: left;
+              padding: 8px;
+            }
+            tr:nth-child(even) {
+              background-color: #dddddd;
+            }
         </style>
-
     </head>
     
     <body>
         <div id="wrapper">
             <main>
-                <div id="content">
+                <div class="content page-header">
                     <div class="innertube">
                         <i>Page last refreshed <?php echo date("F d, Y H:i:s");?></i>
-                        <h1>FPlus: Social Media Redefined</h1>
+                        <a href="/logout.html   ">(Logout)</a>
+                        <h1>FPlus: Social Networking Redefined</h1>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="innertube">
+                        <h2>Register New Account</h2>
+                        Fill in all the details to register your account. I mean, we need your personal info to sell. That's how we pay our bills, after all. Therefore, all fields are mandatory.
                         <?php
                             if(isset($_GET["error"])){
                                 if($_GET["error"] == "not_match"){
@@ -122,45 +135,40 @@
                                 unset($_GET["error"]);
                             }
                         ?>
-                        <h2>Register New Account</h2>
-                        Fill in all the details to register your account. I mean, we need your personal info to sell. That's how we pay our bills, after all. Therefore, all fields are mandatory. 
+                        <div id = "register">
+                                <form method="post" style="text-align: left;" action="<?php echo $_SERVER["PHP_SELF"];?>">
+                                    <center>
+                                        <input type="text" name="username" maxlength="255" placeholder="Unique username/identifier" id="inputUsername" required>
+                                        <br>
+                                        <input type="text" name="fname" maxlength="255" placeholder="First name" id="inputFName" required>
+                                        <br>
+                                        <input type="text" name="lname" maxlength="255" placeholder="Last name" id="inputLName" required>
+                                        <br>
+                                        <input type="email" name="email" maxlength="255" placeholder="email" id="inputEmail" required>
+                                        <br>
+                                        <input type="password" name="pwd" maxlength="255" placeholder="Password (max 255 chars)" id="inputPwd" required>
+                                        <br>
+                                        <input type="password" name="cnf_pwd" maxlength="255" placeholder="Confirm Password (max 255 chars)" id="inputCnfPWd" required>
+                                        <br>
+                                        <input type="text" name="phone" maxlength="255" placeholder="Phone, eg 798955844" id="inputPhone" required>
+                                        <br>
+                                        <input type="date" name="dob" id="inputDob" required>
+                                        <br>
+                                        <input type="text" name="sex" maxlength="255" placeholder="Sex" id="inputSex" required>
+                                        <br>
+                                        <br>
+                                        <input type="submit" value="Submit">
+                                    </center>
+                                </form>
+                            </div>
                     </div>
-                <div id = "register">
-                    <form method="post" style="text-align: left;" action="<?php echo $_SERVER["PHP_SELF"];?>">
-                        <center>
-                            <input type="text" name="username" maxlength="255" placeholder="Unique username/identifier" id="inputUsername" required>
-                            <br>
-                            <input type="text" name="fname" maxlength="255" placeholder="First name" id="inputFName" required>
-                            <br>
-                            <input type="text" name="lname" maxlength="255" placeholder="Last name" id="inputLName" required>
-                            <br>
-                            <input type="email" name="email" maxlength="255" placeholder="email" id="inputEmail" required>
-                            <br>
-                            <input type="password" name="pwd" maxlength="255" placeholder="Password (max 255 chars)" id="inputPwd" required>
-                            <br>
-                            <input type="password" name="cnf_pwd" maxlength="255" placeholder="Confirm Password (max 255 chars)" id="inputCnfPWd" required>
-                            <br>
-                            <input type="text" name="phone" maxlength="255" placeholder="Phone, eg 798955844" id="inputPhone" required>
-                            <br>
-                            <input type="date" name="dob" id="inputDob" required>
-                            <br>
-                            <input type="text" name="sex" maxlength="255" placeholder="Sex" id="inputSex" required>
-                            <br>
-                            <br>
-                            <input type="submit" value="Submit">
-                        </center>
-                    </form>
                 </div>
-                </div>
-
-                
-            </main>`
+            </main>
             
             <nav id="nav">
                 <div class="innertube">
-                    <h3>About</h3>
-                    Just another cool website that creepily stalks you and your private data. Ostensibly a social networking site too. (We don't have complex privacy policies, because we GUARANTEE you no privacy. Happy browsing!) 
-                    <br>
+                    <h3>Activity</h3>
+                    <p>Hello unsuspecting victom! Welcome to the entrance of hell. Here all actions (posts, likes, comments, etc) will be saved forever for you to look back and regret. If you have any concerns about this, please don't worry cuz this is the new cool thing in the street.</p>
                 </div>
             </nav>
             

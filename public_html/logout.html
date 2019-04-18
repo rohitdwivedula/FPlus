@@ -1,0 +1,7 @@
+<?php
+if($_SERVER['REQUEST_METHOD'] === GET){
+    session_destroy();
+    header("Location: index.html?success=logout");
+    exit();
+}
+?>

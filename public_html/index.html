@@ -32,11 +32,17 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
                 background: #eee;
             }
             
+            .page-header {
+                background-color: #d1e2ff;
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+            }
+
             #wrapper {
                 overflow: hidden;
             }
             
-            #content {
+            .content {
                 margin-left: 230px; /* Same as 'nav' width */
             }
             
@@ -44,6 +50,17 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
                 margin: 15px; /* Padding for content */
                 margin-top: 0;
             }
+            
+            p {
+                color: #555;
+            }
+    
+            nav ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+            
             .error {
                 padding-top: 7px;
                 padding-bottom: 7px;
@@ -58,92 +75,88 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
                 color: black;
                 text-align: center;
             }
-            
-            p {
-                color: #555;
-            }
-    
-            nav ul {
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-            }
-            
+
             nav ul a {
                 color: darkgreen;
                 text-decoration: none;
             }
-    
         </style>
-
     </head>
     
     <body>
         <div id="wrapper">
-        
             <main>
-                <div id="content">
+                <div class="content page-header">
                     <div class="innertube">
                         <i>Page last refreshed <?php echo date("F d, Y H:i:s");?></i>
+                        <a href="/logout.html   ">(Logout)</a>
                         <h1>FPlus: Social Networking Redefined</h1>
-                        <?php
-                            if(isset($_GET["error"])){
-                                if($_GET["error"] == "incorrect"){
-                                    $message = "Your username and/or password are incorrect";
-                                }
-                                elseif($_GET["error"] == "timed_out"){
-                                    $message = "Your session has timed out. Please login again.";
-                                }
-                                elseif($_GET["error"] == "already_exists"){
-                                    $message = "An account with that email already exists.";
-                                }
-                                elseif($_GET["error"] == "notexists"){
-                                    $message = "The account ID you've entered does not exist.";
-                                }
-                                else{
-                                    $message = "An unexpected error was experienced.";
-                                }
-                                echo "<div class='error'>$message</div>";
-                            }
-                        ?>
-                        <?php
-                            if(isset($_GET["success"])){
-                                if($_GET["success"] == "account_created"){
-                                    $message = "Your account was successfully created";
-                                }
-                                if(isset($message)){
-                                    echo "<div class='success'>$message</div>";
-                                }
-                            }
-                        ?>
-                        <p> Welcome! Yet another social media network incubated at Silicon Valley to make you even more insecure about day to day life. 
-                        <ol>
-                            <li>Keep your password safe.</li> 
-                            <li>You can change your password</li>
-                            <li>We use your private data for everything (including selling it). Jussayin.</li>
-                        </ol>
-                        </p>
-                        <center>
-                        	<div id = "login">
-	                    		<form method="post" action="<?php echo $_SERVER["PHP_SELF"];?>">
-			                        <label for="username">Username:</label>
-			                        <input type="text" name="username" id="inputEmail" required>
-			                        <label for="password">Password:</label>
-			                        <input type="password" name="password" id="inputKey" required>
-			                        <input type="submit" value="Submit">
-	                   			 </form>
-	                		</div>
-	                	</center>
-	                    <p>Don't have an account yet? <a href="/register.html">Register here</a> today to waste hours more time on social media!!!</p>
                     </div>
-                </div>                
+                </div>
+                <div class="content">
+                    <div class="innertube">
+                        <h2>Register New Account</h2>
+                        <p> Welcome! Yet another social media network incubated at Silicon Valley to make you even more insecure about day to day life. 
+                            <?php
+                                if(isset($_GET["error"])){
+                                    if($_GET["error"] == "incorrect"){
+                                        $message = "Your username and/or password are incorrect";
+                                    }
+                                    elseif($_GET["error"] == "timed_out"){
+                                        $message = "Your session has timed out. Please login again.";
+                                    }
+                                    elseif($_GET["error"] == "already_exists"){
+                                        $message = "An account with that username already exists. (you were too slow)";
+                                    }
+                                    elseif($_GET["error"] == "notexists"){
+                                        $message = "The account ID you've entered does not exist.";
+                                    }
+                                    else{
+                                        $message = "An unexpected error was experienced.";
+                                    }
+                                    echo "<div class='error'>$message</div>";
+                                }
+                            ?>
+                            <?php
+                                if(isset($_GET["success"])){
+                                    if($_GET["success"] == "account_created"){
+                                        $message = "Your account was successfully created";
+                                    }
+                                    if($_GET["success"] == "logout"){
+                                        $message = "Logged out successfully";
+                                    }
+                                    if(isset($message)){
+                                        echo "<div class='success'><b>$message</b></div>";
+                                    }
+                                }
+                            ?>
+                            <ol>
+                                <li>Keep your password safe.</li> 
+                                <li>You can change your password</li>
+                                <li>We use your private data for everything (including selling it). Jussayin.</li>
+                            </ol>
+                        </p>
+    
+                    </div>
+                </div>
+                <center>
+                    <div id = "login">
+                        <form method="post" action="<?php echo $_SERVER["PHP_SELF"];?>">
+                            <label for="username">Username:</label>
+                            <input type="text" name="username" id="inputEmail" required>
+                            <label for="password">Password:</label>
+                            <input type="password" name="password" id="inputKey" required>
+                            <input type="submit" value="Submit">
+                            </form>
+                    </div>
+                </center> 
+                <p>Don't have an account yet? <a href="/register.html">Register here</a> today to waste hours more time on social media!!!</p>      
             </main>
             
             <nav id="nav">
                 <div class="innertube">
-                    <h3>About</h3>
-                    Just another cool website that creepily stalks you and your private data. Ostensibly a social networking site too. (We don't have complex privacy policies, because we GUARANTEE you no privacy. Happy browsing!) 
-                    <br>
+                    <h3>Welcome!</h3>
+                    <p>Hello unsuspecting victim! Welcome to the entrance of hell. Here all actions (posts, likes, comments, etc) will be saved forever for you to look back and regret. If you have any concerns about this, please don't worry cuz this is the new cool thing in the street.</p>
                 </div>
             </nav>
             
