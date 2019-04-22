@@ -12,7 +12,7 @@
 					session_start();
 					$_SESSION['firstname'] = $row['firstname'];
 					$_SESSION['username'] = $username;
-					header("Location: feed.html");
+					header("Location: feed_global.html");
 					exit();
 				}
 				else{
