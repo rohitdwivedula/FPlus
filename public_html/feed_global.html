@@ -1,0 +1,104 @@
+<?php
+session_start();
+$set = isset($_SESSION["firstname"]) && isset($_SESSION["username"]);
+if(!$set){
+    session_destroy();
+    unset($_SESSION["firstname"]);
+    unset($_SESSION["username"]);
+    header("Location: index.html?error=timed_out");
+    exit();
+}
+?>
+<!-- Global:1/2/3 -->
+<html>
+<head>
+    <title>Feed</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="feed_global.html">FPlus.</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="feed_global.html"><strong>Global</strong></a>
+                  </li>
+              <li class="nav-item">
+                <a class="nav-link" href="feed_friends.html">Friends</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="feed_family.html">Family</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="feed_acq.html">Acquaintances</a>
+              </li>
+            </ul>
+            <span class="navbar-text">
+                <a class="nav-link" href="#">Add</a>
+              </span>
+            <span class="navbar-text">
+              <a class="nav-link" href="logout.html">Logout</a>
+            </span>
+          </div>
+        </nav>
+    
+      <div class="container">
+        <p></p>
+        <h2 align="center">Global Feed.</h2>
+        <h3 align="center">Here you see the posts made by everyone.</h3>
+        <p></p>
+        <?php
+            require_once("./utilities/db_connection.php");
+            $username = $_SESSION["username"];
+            $query = "SELECT * FROM posts WHERE username=(SELECT user2 FROM relation WHERE 
+            user1='$username' AND relation_type=3) AND visibility=(SELECT relation_type FROM 
+            relation WHERE user1=(SELECT user2 FROM relation WHERE user1='$username' AND 
+            relation_type=3) AND user2='$username') UNION
+
+            SELECT * FROM posts WHERE username=(SELECT user2 FROM relation WHERE 
+            user1='$username' AND relation_type=2) AND visibility=(SELECT relation_type FROM 
+            relation WHERE user1=(SELECT user2 FROM relation WHERE user1='$username' AND 
+            relation_type=2) AND user2='$username') UNION
+
+            SELECT * FROM posts WHERE username=(SELECT user2 FROM relation WHERE 
+            user1='$username' AND relation_type=1) AND visibility=(SELECT relation_type FROM 
+            relation WHERE user1=(SELECT user2 FROM relation WHERE user1='$username' AND 
+            relation_type=1) AND user2='$username') order by posted_on desc
+            ;";
+            $result = getResult($query);
+            if($result && mysqli_num_rows($result)!=0){
+              while($row = mysqli_fetch_array($result)){
+                $body = $row['body'];
+                $date = $row['posted_on'];
+                $poster = $row['username'];
+
+                echo"<div class=\"card text-center border-dark mb-3\">
+                    <div align=\"center\" class=\"card-header\">
+                      $poster : $date
+                    </div>
+                    <div class=\"card-body\">
+                      <p align=\"center\" class=\"card-text\">$body</p>
+                      <a href=\"#\" class=\"btn btn-dark\">Detail View</a>
+                    </div>
+                  </div>
+                  <p></p>
+                  ";            
+              }
+            }
+            else
+            {
+              echo "
+              <p align=\"center\">No posts to display.</p>";
+            }
+
+        ?>
+      </div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
