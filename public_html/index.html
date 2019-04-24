@@ -1,164 +1,65 @@
 <!DOCTYPE html>
-<?php
-if($_SERVER['REQUEST_METHOD'] === "POST"){
-    require_once("./utilities/authenticate.php");
-    authenticate($_POST["username"], $_POST["password"]);
-}
-?>
-<html>
+<html lang="en">
     <head>
-        <title> FPlus </title>
-        <style type="text/css">
-            body{
-                margin:0;
-                padding:0;
-                font-family: Sans-Serif;
-                line-height: 1.5em;
-            }
-            
-            main {
-                padding-bottom: 10010px;
-                margin-bottom: -10000px;
-                float: left;
-                width: 100%;
-            }
-            
-            #nav {
-                float: left;
-                width: 230px;
-                margin-left: -100%;
-                padding-bottom: 10010px;
-                margin-bottom: -10000px;
-                background: #eee;
-            }
-            
-            .page-header {
-                background-color: #d1e2ff;
-                padding-bottom: 10px;
-                margin-bottom: 10px;
-            }
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale = 1">
 
-            #wrapper {
-                overflow: hidden;
-            }
-            
-            .content {
-                margin-left: 230px; /* Same as 'nav' width */
-            }
-            
-            .innertube{
-                margin: 15px; /* Padding for content */
-                margin-top: 0;
-            }
-            
-            p {
-                color: #555;
-            }
-    
-            nav ul {
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-            }
-            
-            .error {
-                padding-top: 7px;
-                padding-bottom: 7px;
-                background-color:  #ff9999;
-                color: black;
-                text-align: center;
-            }
-            .success {
-                padding-top: 7px;
-                padding-bottom: 7px;
-                background-color:  #009900;
-                color: black;
-                text-align: center;
-            }
+			<title>FPlus</title>
+			<link rel="icon" href="icon.png" type="image/x-icon">
 
-            nav ul a {
-                color: darkgreen;
-                text-decoration: none;
-            }
-        </style>
-    </head>
-    
-    <body>
-        <div id="wrapper">
-            <main>
-                <div class="content page-header">
-                    <div class="innertube">
-                        <i>Page last refreshed <?php echo date("F d, Y H:i:s");?></i>
-                        <h1>FPlus: Social Networking Redefined</h1>
-                    </div>
-                </div>
-                <div class="content">
-                    <div class="innertube">
-                        <h2>Register New Account</h2>
-                        <p> Welcome! Yet another social media network incubated at Silicon Valley to make you even more insecure about day to day life. 
-                            <?php
-                                if(isset($_GET["error"])){
-                                    if($_GET["error"] == "incorrect"){
-                                        $message = "Your username and/or password are incorrect";
-                                    }
-                                    elseif($_GET["error"] == "timed_out"){
-                                        $message = "Your session has timed out. Please login again.";
-                                    }
-                                    elseif($_GET["error"] == "already_exists"){
-                                        $message = "An account with that username already exists. (you were too slow)";
-                                    }
-                                    elseif($_GET["error"] == "notexists"){
-                                        $message = "The account ID you've entered does not exist.";
-                                    }
-                                    else{
-                                        $message = "An unexpected error was experienced.";
-                                    }
-                                    echo "<div class='error'>$message</div>";
-                                }
-                            ?>
-                            <?php
-                                if(isset($_GET["success"])){
-                                    if($_GET["success"] == "account_created"){
-                                        $message = "Your account was successfully created";
-                                    }
-                                    if($_GET["success"] == "logout"){
-                                        $message = "Logged out successfully";
-                                    }
-                                    if(isset($message)){
-                                        echo "<div class='success'><b>$message</b></div>";
-                                    }
-                                }
-                            ?>
-                            <ol>
-                                <li>Keep your password safe.</li> 
-                                <li>You can change your password</li>
-                                <li>We use your private data for everything (including selling it). Jussayin.</li>
-                            </ol>
-                        </p>
-    
-                    </div>
-                </div>
-                <center>
-                    <div id = "login">
-                        <form method="post" action="<?php echo $_SERVER["PHP_SELF"];?>">
-                            <label for="username">Username:</label>
-                            <input type="text" name="username" id="inputEmail" required>
-                            <label for="password">Password:</label>
-                            <input type="password" name="password" id="inputKey" required>
-                            <input type="submit" value="Submit">
-                        </form>
-                    </div>
-                </center> 
-                <p>Don't have an account yet? <a href="/register.html">Register here</a> today to waste hours more time on social media!!!</p>      
-            </main>
-            
-            <nav id="nav">
-                <div class="innertube">
-                    <h3>Welcome!</h3>
-                    <p>Hello unsuspecting victim! Welcome to the entrance of hell. Here all actions (posts, likes, comments, etc) will be saved forever for you to look back and regret. If you have any concerns about this, please don't worry cuz this is the new cool thing in the street.</p>
-                </div>
+			<!-- Style sheets -->
+			<link rel="stylesheet" href="css/reset.css" type="text/css"> <!-- CSS reset -->
+			<link rel="stylesheet" href="css/index.css" type="text/css"> <!-- main styling -->
+
+      </head>
+
+        <body>
+            <nav id="vertical-nav">
+                <ul>
+                    <li>
+                        <a href="#section1" data-number="1">
+                            <span class="cd-dot"></span>
+                            <span class="cd-label cd-signup">Get Started</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#section2" data-number="2">
+                            <span class="cd-dot"></span>
+                            <span class="cd-label">Extra info</span>
+                        </a>
+                    </li>
+                </ul>
             </nav>
-            
-        </div>
-    </body>
+
+
+            <section id="section1" class="cd-section" data-parallax="scroll" data-image-src="img/bg/1.jpg">
+                <span class="main-nav">
+                    <a class="cd-signin" href="login.html">Sign in</a>
+                </span>
+
+                <div id="logo"><img src="fplus-logo.png" alt="logo"/></div>
+                <p id="slogan">Everyone has a story to share. Share yours now. It's easy, and free.</p>
+
+                <span class="section-nav">
+                    <ul>
+                        <li><a id="signup" class="cd-signup" href="signup.html">Get Started</a></li>
+                    </ul>
+                </span>
+
+                <a href="#section2" class="cd-scroll-down cd-img-replace">scroll down</a>
+            </section>
+
+            <section id="section2" class="cd-section" data-parallax="scroll" data-image-src="img/bg/10.jpg">
+                <h1>Get connected with anyone, anywhere in the world with FPlus.</h1>
+                <p>
+                    Create an account now and connect with your loved ones.
+                </p>
+                <span class="section-nav">
+                    <ul>
+                        <li><a id="signup" class="cd-signup" href="signup.html">Get Started</a></li>
+                    </ul>
+                </span>
+                <!--a href="#section2" class="cd-scroll-down cd-img-replace">scroll down</a-->
+            </section>
+        </body>
 </html>

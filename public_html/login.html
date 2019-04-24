@@ -29,8 +29,8 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
         <div class="login">
           <h1>Login</h1>
           <form method="post" action="<?php echo $_SERVER["PHP_SELF"];?>">
-            <p><input type="text" name="login" value="" placeholder="Username or Email"></p>
-            <p><input type="password" name="password" value="" placeholder="Password"></p>
+            <p><input type="text" name="login" value="" placeholder="Username" required></p>
+            <p><input type="password" name="password" value="" placeholder="Password" required></p>
             <p class="submit"><input type="submit" value="Submit"></p>
           </form>
         </div>
