@@ -10,137 +10,110 @@ if(!$set){
     exit();
 }
 ?>
-<html>
-    <head>
-        <title> FPlus </title>
-        <style type="text/css">
-            body{
-                margin:0;
-                padding:0;
-                font-family: Sans-Serif;
-                line-height: 1.5em;
-            }
-            
-            main {
-                padding-bottom: 10010px;
-                margin-bottom: -10000px;
-                float: left;
-                width: 100%;
-            }
-            
-            #nav {
-                float: left;
-                width: 230px;
-                margin-left: -100%;
-                padding-bottom: 10010px;
-                margin-bottom: -10000px;
-                background: #eee;
-            }
-            
-            .page-header {
-                background-color: #d1e2ff;
-                padding-bottom: 10px;
-                margin-bottom: 10px;
-            }
 
-            #wrapper {
-                overflow: hidden;
-            }
-            
-            .content {
-                margin-left: 230px; /* Same as 'nav' width */
-            }
-            
-            .innertube{
-                margin: 15px; /* Padding for content */
-                margin-top: 0;
-            }
-            
-            p {
-                color: #555;
-            }
+<html>
+<head>
+    <title>Feed</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style type="text/css">
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+	</style>
+</head>
+
+<body>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="feed_global.html">FPlus.</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="feed_global.html">Global </a>
+                  </li>
+              <li class="nav-item">
+                <a class="nav-link" href="feed_friends.html">Friends</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="feed_family.html">Family</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="feed_acq.html">Acquaintances</a>
+              </li>
+            </ul>
+            <span class="navbar-text">
+                <a class="nav-link" href="add_post.html">Add</a>
+              </span>
+            <span class="navbar-text">
+                <a class="nav-link" href="activity.html">Activity</a>
+              </span>
+
+            <span class="navbar-text">
+              <a class="nav-link" href="logout.html">Logout</a>
+            </span>
+          </div>
+        </nav>
     
-            nav ul {
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
+      <div class="container">
+        <p></p>
+        <h2 align="center">Activity Log</h2>
+        <h3 align="center">All the actions you have taken on this website.</h3>
+        <p></p>
+        <?php
+            require_once("./utilities/db_connection.php");
+            $username = $_SESSION["username"];
+            $query = "select 'Post' as action, posted_on as timestamp, body as detail from posts WHERE username='$username' UNION select 'Comment' as action, commented_on as timestamp, comment_text as detail from comments WHERE username='$username' ORDER BY timestamp DESC;";
+            $result = getResult($query);
+            if($result && mysqli_num_rows($result) != 0){
+                echo "<table>
+                    <tr>
+                        <th>
+                            Timestamp
+                        </th>
+                        <th>
+                            Action Type
+                        </th>
+                        <th>
+                            Details
+                        </th>
+                    </tr>";
+                while($row = mysqli_fetch_array($result)){
+                    $action_type = $row["action"];
+                    $timestamp = $row["timestamp"];
+                    if(strlen($row["detail"]) > 30){
+                    	$flag = "...";
+                	}
+                	else{
+                		$flag = "";
+                	}
+                    $text = substr($row["detail"], 0, 30);
+                    echo"<tr>
+                        <td>$timestamp</td>
+                        <td>$action_type</td>
+                        <td>$text$flag</td>
+                    </tr>";
+                }
+                echo "</table>";
             }
-            
-            nav ul a {
-                color: darkgreen;
-                text-decoration: none;
+            else{
+                echo "<p style='text-align: center;'>No records could be found/fetched.</p>"; 
             }
-            table {
-              font-family: arial, sans-serif;
-              border-collapse: collapse;
-              width: 100%;
-            }
-            td, th {
-              border: 1px solid #dddddd;
-              text-align: left;
-              padding: 8px;
-            }
-            tr:nth-child(even) {
-              background-color: #dddddd;
-            }
-        </style>
-    </head>
-    
-    <body>
-        <div id="wrapper">
-            <main>
-                <div class="content page-header">
-                    <div class="innertube">
-                        <i>Page last refreshed <?php echo date("F d, Y H:i:s");?></i>
-                        <a href="/logout.html   ">(Logout)</a>
-                        <h1>FPlus: Social Networking Redefined</h1>
-                    </div>
-                </div>
-                <div class="content">
-                    <?php
-                        require_once("./utilities/db_connection.php");
-                        $username = $_SESSION["username"];
-                        $query = "select 'Post' as action, posted_on as timestamp, body as detail from posts WHERE username='$username' UNION select 'Comment' as action, commented_on as timestamp, comment_text as detail from comments WHERE username='$username';";
-                        echo $query;
-                        $result = getResult($query);
-                        if($result && mysqli_num_rows($result) != 0){
-                            echo "<table>
-                                <tr>
-                                    <th>
-                                        Timestamp
-                                    </th>
-                                    <th>
-                                        Action Type
-                                    </th>
-                                    <th>
-                                        Details
-                                    </th>
-                                </tr>";
-                            while($row = mysqli_fetch_array($result)){
-                                $action_type = $row["action"];
-                                $timestamp = $row["timestamp"];
-                                $text = substr($row["detail"], 0, 30);
-                                echo"<tr>
-                                    <td>$timestamp</td>
-                                    <td>$action_type</td>
-                                    <td>$text</td>
-                                </tr>";
-                            }
-                            echo "</table>";
-                        }
-                        else{
-                            echo "<p style='text-align: center;'>No records could be found/fetched.</p>"; 
-                        }
-                    ?>
-                </div>
-            </main>
-            
-            <nav id="nav">
-                <div class="innertube">
-                    <h3>Activity</h3>
-                    <p>Hello <?php echo $_SESSION["firstname"]?>, welcome to the activity log page of your account. Here all actions (posts, likes, comments) will be displayed in a tabular format here. If you find any suspicious activity, please change your password as soon as possible.</p>
-                </div>
-            </nav>
-        </div>
-    </body>
+        ?>
+      </div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
 </html>
