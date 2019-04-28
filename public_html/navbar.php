@@ -17,6 +17,9 @@
       <li class="nav-item active">
         <a class="nav-link" href="feed_acq.html">Acquaintances</a>
       </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="search.html">Search</a>
+      </li>
     </ul>
     <span class="navbar-text">
         <a class="nav-link" href="add_post.html">Add</a>
