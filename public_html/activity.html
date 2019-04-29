@@ -33,48 +33,16 @@ if(!$set){
 </head>
 
 <body>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="feed_global.html">FPlus.</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="feed_global.html">Global </a>
-                  </li>
-              <li class="nav-item">
-                <a class="nav-link" href="feed_friends.html">Friends</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="feed_family.html">Family</a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link" href="feed_acq.html">Acquaintances</a>
-              </li>
-            </ul>
-            <span class="navbar-text">
-                <a class="nav-link" href="add_post.html">Add</a>
-              </span>
-            <span class="navbar-text">
-                <a class="nav-link" href="activity.html">Activity</a>
-              </span>
-
-            <span class="navbar-text">
-              <a class="nav-link" href="logout.html">Logout</a>
-            </span>
-          </div>
-        </nav>
-    
+      <?php include 'navbar.php'; ?>
       <div class="container">
         <p></p>
         <h2 align="center">Activity Log</h2>
-        <h3 align="center">All the actions you have taken on this website.</h3>
+        <h4 align="center">All the actions you have taken on this website.</h3>
         <p></p>
         <?php
             require_once("./utilities/db_connection.php");
             $username = $_SESSION["username"];
-            $query = "select 'Post' as action, posted_on as timestamp, body as detail from posts WHERE username='$username' UNION select 'Comment' as action, commented_on as timestamp, comment_text as detail from comments WHERE username='$username' ORDER BY timestamp DESC;";
+            $query = "select 'Post' as action, posted_on as timestamp, body as detail, post_id as id from posts WHERE username='$username' UNION select 'Comment' as action, commented_on as timestamp, comment_text as detail, comment_id as id from comments WHERE username='$username' ORDER BY timestamp DESC;";
             $result = getResult($query);
             if($result && mysqli_num_rows($result) != 0){
                 echo "<table>
@@ -92,6 +60,7 @@ if(!$set){
                 while($row = mysqli_fetch_array($result)){
                     $action_type = $row["action"];
                     $timestamp = $row["timestamp"];
+                    $id = $row["id"];
                     if(strlen($row["detail"]) > 30){
                     	$flag = "...";
                 	}
@@ -99,16 +68,68 @@ if(!$set){
                 		$flag = "";
                 	}
                     $text = substr($row["detail"], 0, 30);
-                    echo"<tr>
-                        <td>$timestamp</td>
-                        <td>$action_type</td>
-                        <td>$text$flag</td>
-                    </tr>";
+                    if($row['action'] == 'Post'){
+                    	echo"<tr>
+	                        <td><a href ='/post.php?id={$id}'>$timestamp</a></td>
+	                        <td>$action_type</td>
+	                        <td>$text$flag</td>
+	                    </tr>";
+               		}
+                    else{
+                    	echo"<tr>
+	                        <td><a href ='/comment.php?id={$id}'>$timestamp</a></td>
+	                        <td>$action_type</td>
+	                        <td>$text$flag</td>
+	                    </tr>";
+                	}
                 }
                 echo "</table>";
             }
             else{
                 echo "<p style='text-align: center;'>No records could be found/fetched.</p>"; 
+            }
+        ?>
+        <br>
+        <?php
+            require_once("./utilities/db_connection.php");
+            $username = $_SESSION["username"];
+            $query = "SELECT user2, relation_type FROM relation WHERE user1='{$_SESSION['username']}';";
+            $result = getResult($query);
+            if($result && mysqli_num_rows($result) != 0){
+                echo "<table>
+                    <tr>
+                        <th>
+                            Username
+                        </th>
+                        <th>
+                            Relation Type
+                        </th>
+                        <th>
+                        	Action
+                        </th>
+                    </tr>";
+                while($row = mysqli_fetch_array($result)){
+                    $relation = $row["relation_type"];
+                    $user2 = $row["user2"];
+                    if($relation == 1){
+                    	$relation = "Friend";
+	                }
+	                else if($relation == 2){
+	                	$relation = "Family";
+	            	}
+	            	else{
+	            		$relation = "Acquaintance";
+	            	}
+                	echo"<tr>
+                        <td>$user2</td>
+                        <td>$relation</td>
+                        <td><a href='utilities/removerelation.php?user={$user2}' class='btn btn-dark'>Remove</a></td>
+                    </tr>";
+                }
+                echo "</table>";
+            }
+            else{
+                echo "<p style='text-align: center;'>You have no friends/family/acquaintances on the website.</p>"; 
             }
         ?>
       </div>
