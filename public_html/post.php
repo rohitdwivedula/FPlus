@@ -10,6 +10,14 @@ if(!$set){
 }
 ?>
 
+<?php
+if($_SERVER['REQUEST_METHOD'] === "POST"){
+    require_once("./utilities/add_comment.php");
+    add_comment($_POST['id'], $_POST['comment']);
+    exit();
+}
+?>
+
 <?php if(!isset($_GET['id'])): ?>
 <?php
 	header("Location: feed_global.html");
@@ -97,11 +105,17 @@ if(!$set){
 	            }
 
 	        ?>
+	        <form action = "/post.php" method = "post">
+			    <input class="form-control" type="text" placeholder="Type comment and press enter to publish" name="comment" aria-label="Search">
+			    <?php 
+			    echo "<input type='hidden' name='id' value='{$_GET['id']}'>";
+				?>
+			</form>
 	        <center><h2>Comments</h2></center>
 	        <?php
             require_once("./utilities/db_connection.php");
             $id = $_GET["id"];
-            $query = "SELECT * FROM comments WHERE post_id = {$id};";
+            $query = "SELECT * FROM comments WHERE post_id = {$id} ORDER BY commented_on DESC;";
             $result = getResult($query);
             if($result && mysqli_num_rows($result) != 0){
                 echo "<table>
@@ -118,10 +132,19 @@ if(!$set){
                     $commentor = $row["username"];
                     $timestamp = $row["commented_on"];
                     $id = $row["comment_id"];
-                    echo"<tr>
+                    if($_SESSION['username'] == $commentor){
+                    	echo"<tr>
+                    		<td><b>$commentor</b></td>
+	                        <td>$text <small>Posted on $timestamp. <a href='deletecomment.php?id={$id}&post={$_GET['id']}'> (Delete) </a></small></td>
+	                    </tr>";
+                    }
+                    else{
+                    	echo"<tr>
                     		<td><b>$commentor</b></td>
 	                        <td>$text <small>Posted on $timestamp</small></td>
 	                    </tr>";
+                    }
+                    
                 }
                 echo "</table>";
             }
