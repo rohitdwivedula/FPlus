@@ -21,10 +21,12 @@ if(!$set){
   <?php include 'navbar.php'; ?>
   <form action = "search.html" method = "get">
     <input class="form-control" type="text" placeholder="Search" name="query" aria-label="Search">
-		<input text = "Search" type = "Submit">
+	<center>
+		<input text ="Search" type = "Submit">
+  	</center>
   </form>
   <?php if(!isset($_GET['query'])): ?>
-    <p>Type in search query to begin.</p>
+    <center><p>Type in search query to begin.</p></center>
   <?php else: ?> 
     Searching for: <?php echo $_GET['query']; ?>
     <div class="container">        

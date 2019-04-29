@@ -36,18 +36,18 @@ if(!$set){
                 $body = $row['body'];
                 $date = $row['posted_on'];
                 $poster = $row['username'];
-
-                echo"<div class=\"card text-center border-dark mb-3\">
-                    <div align=\"center\" class=\"card-header\">
-                      $poster : $date
-                    </div>
-                    <div class=\"card-body\">
-                      <p align=\"center\" class=\"card-text\">$body</p>
-                      <a href=\"#\" align=\"center\" class=\"btn btn-dark\">Detail View</a>
-                    </div>
+                $id = $row['post_id'];
+                echo"<div class='card text-center border-dark mb-3'>
+                  <div align='left' class='card-header'>
+                    Posted by <b>$poster</b> on $date
                   </div>
-                  <p></p>
-                  ";            
+                  <div class='card-body'>
+                    <p align='left' class='card-text'>$body</p>
+                    <a href='/post.php?id={$id}' class='btn btn-dark'>Detail View</a>
+                  </div>
+                </div>
+                <p></p>
+                ";          
               }
             }
             else
