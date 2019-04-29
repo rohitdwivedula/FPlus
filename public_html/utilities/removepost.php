@@ -11,14 +11,15 @@ if(!$set){
 ?>
 <?php
     require_once("db_connection2.php");
-    $user2 = $_GET['user'];
+    $id = $_GET['id'];
     $username = $_SESSION["username"];
-    $query = "DELETE FROM relation WHERE user1 = '{$username}' AND user2 = '{$user2}';";
+    $query = "DELETE FROM posts WHERE username = '{$username}' AND post_id = {$id};";
+    echo $query;
     $qResult = getResult($query);
     if($qResult == True){
-        header("Location: /activity.html");
+        header("Location: /feed_global.html");
     }
     else{
-        header("Location: /activity.html");
+        header("Location: /post.php?id={$id}");
     }  
 ?>
