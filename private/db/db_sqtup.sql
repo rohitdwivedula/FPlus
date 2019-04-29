@@ -34,9 +34,9 @@ CREATE TABLE comments (
 	commented_on datetime NOT NULL,
 	parent int,
 	PRIMARY KEY (comment_id),
-	FOREIGN KEY (post_id) REFERENCES posts(post_id),
-	FOREIGN KEY (username) REFERENCES users(username),
-	FOREIGN KEY (parent) REFERENCES comments(comment_id)
+	FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+	FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE,
+	FOREIGN KEY (parent) REFERENCES comments(comment_id) ON DELETE CASCADE
 );
 
 CREATE TABLE reactions (
@@ -44,8 +44,8 @@ CREATE TABLE reactions (
 	username varchar(25) NOT NULL,
 	react_type int NOT NULL,
 	PRIMARY KEY (post_id,username),
-	FOREIGN KEY (post_id) REFERENCES posts(post_id),
-	FOREIGN KEY (username) REFERENCES users(username)
+	FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+	FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
 );
 
 CREATE TABLE relation (
