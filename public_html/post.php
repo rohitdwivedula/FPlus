@@ -51,6 +51,16 @@ if(!$set){
 	                $body = $row['body'];
 	                $date = $row['posted_on'];
 	                $poster = $row['username'];
+	                $visible_to = $row['visibility'];
+	                if($visible_to == 1){
+	                	$visible_to = "friends";
+	                }
+	                else if($visible_to == 2){
+	                	$visible_to = "family";
+	                }
+	                else{
+	                	$visible_to = "acquaintances";
+	                }
 	                if($poster == $_SESSION['username']){
 	                	echo"<div class='card text-center border-dark mb-3'>
 		                    <div align='left' class='card-header'>
@@ -61,6 +71,7 @@ if(!$set){
 		                      <center>
 		                      	<a href='utilities/removepost.php?id={$_GET['id']}' class='btn btn-dark'>Remove</a>
 		                      </center>
+		                      <small>Visible only to your $visible_to  
 		                    </div>
 		                  </div>
 		                  <p></p>";
