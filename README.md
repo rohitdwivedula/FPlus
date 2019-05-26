@@ -2,6 +2,8 @@
 
 A social networking website built on the LAMP stack. Made as a project for partial credit towards the course CS F212 Database Management Systems. For instructions on how to setup this application go to [setup instructions](./SetupInstructions.md), which also has a brief explanation on how the file/folder system of this application are organized.
 
+![Screenshot of the Home Page](screenshots/homepage.png)
+
 # Functionality Supported
 The social networking application will definitely support the following functionality fully:
 1. Create account (register new account or add users)
